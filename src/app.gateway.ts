@@ -22,7 +22,7 @@ export class AppGateway implements OnGatewayInit {
   }
 
   @SubscribeMessage('message')
-  handleMessage(client: Socket, payload: string): WsResponse<string> {
+  handleMessage(_client: Socket, payload: string): WsResponse<string> {
     return {
       event: 'messageFromServer',
       data: payload,
