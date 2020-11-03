@@ -21,7 +21,7 @@ export class AppGateway implements OnGatewayInit {
     server.emit('Web socket server initialized');
   }
 
-  @SubscribeMessage('message')
+  @SubscribeMessage('messageFromClient')
   handleMessage(_client: Socket, payload: string): WsResponse<string> {
     return {
       event: 'messageFromServer',

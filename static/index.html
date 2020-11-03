@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Static Asset</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script src="/socket.io/socket.io.js"></script>  
+</head>
+
+<body>
+  <div id='v-app'>
+    <h1>{{ title }}</h1>
+    <form>
+      <input v-model="text" type="text" name="message" id="message">
+      <button type="submit" @click.prevent="sendMessage()">Send</button>
+    </form>
+    <p>
+    <ul>
+      <li v-for="msg of messages">{{ msg }}</li>
+    </ul>
+    </p>
+  </div>
+</body>
+<script>
+  let app = new Vue({
+    el: '#v-app',
+    data: {
+      title: 'Websockets Testing',
+      text: '',
+      messages: ['Some message', 'Another message'],
+      socket: null,
+    },
+    methods: {
+      sendMessage() {
+        this.socket.emit('messageFromClient', this.text);
+        this.text = '';
+      },
+      receiveMessage(msg) {
+        console.log(`receive ${msg}`);
+        this.messages.push(msg);
+      }
+    },
+    created() {
+      this.socket = io('http://localhost:3000');
+      this.socket.on('messageFromServer', (msg) => this.receiveMessage(msg))
+    }
+  })
+</script>
+
+</html>
